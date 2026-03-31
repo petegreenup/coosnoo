@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAlarms } from "@/hooks/useAlarms";
 import { useSettings } from "@/hooks/useSettings";
 import { AlarmCard } from "@/components/AlarmCard";
