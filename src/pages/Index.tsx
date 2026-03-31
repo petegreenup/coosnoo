@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useAlarms } from "@/hooks/useAlarms";
-import { useSettings } from "@/hooks/useSettings";
 import { useAlarmRunner } from "@/hooks/useAlarmRunner";
 import { AlarmCard } from "@/components/AlarmCard";
 import { AddAlarmDialog } from "@/components/AddAlarmDialog";
