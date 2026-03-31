@@ -90,6 +90,10 @@ const SettingsPage = () => {
                 ))}
             </div>
           </div>
+
+          <Button onClick={() => navigate("/")} className="w-full" size="lg">
+            Save Settings
+          </Button>
         </div>
       </div>
     </div>
