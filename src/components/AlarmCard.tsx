@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Switch } from "@/components/ui/switch";
 import { Clock, Trash2 } from "lucide-react";
@@ -19,13 +18,11 @@ function formatTime(hour: number, minute: number) {
 
 function isSnoozed(alarm: Alarm): string | null {
   if (!alarm.enabled || !alarm.nextTriggerAt) return null;
-  // Check if nextTriggerAt differs from the normal scheduled time (meaning it was snoozed)
   const scheduled = new Date();
   scheduled.setHours(alarm.hour, alarm.minute, 0, 0);
   if (scheduled.getTime() <= Date.now()) scheduled.setDate(scheduled.getDate() + 1);
-  // If within 60s of scheduled time, it's not a snooze
   if (Math.abs(alarm.nextTriggerAt - scheduled.getTime()) < 60000) return null;
-  // It's snoozed — format the time
+
   const d = new Date(alarm.nextTriggerAt);
   const h = d.getHours() % 12 || 12;
   const m = d.getMinutes().toString().padStart(2, "0");
@@ -37,34 +34,39 @@ export function AlarmCard({ alarm, onToggle, onDelete }: AlarmCardProps) {
   const { time, period } = formatTime(alarm.hour, alarm.minute);
   const navigate = useNavigate();
   const snoozeUntil = isSnoozed(alarm);
+  const isEnabled = alarm.enabled;
 
   return (
     <div
       onClick={() => navigate(`/alarm/${alarm.id}/edit`)}
       className={`flex items-center justify-between rounded-lg border px-5 py-4 transition-all cursor-pointer ${
-        alarm.enabled
+        isEnabled
           ? "border-primary/30 bg-card hover:bg-secondary/50"
-          : "border-border/50 bg-card/50 hover:bg-secondary/30"
+          : "border-border bg-secondary/40 hover:bg-secondary/50"
       }`}
     >
-      <div className={`flex items-center gap-4 ${!alarm.enabled ? "opacity-50" : ""}`}>
-        <Clock className="h-5 w-5 text-muted-foreground" />
+      <div className="flex items-center gap-4">
+        <Clock className={`h-5 w-5 ${isEnabled ? "text-muted-foreground" : "text-foreground/70"}`} />
         <div>
           <div className="flex items-baseline gap-1.5">
-            <span className="font-mono-display text-3xl font-light tracking-tight text-foreground">
+            <span
+              className={`font-mono-display text-3xl font-light tracking-tight ${
+                isEnabled ? "text-foreground" : "text-foreground/85"
+              }`}
+            >
               {time}
             </span>
-            <span className="text-sm font-medium text-muted-foreground">
+            <span className={`text-sm font-medium ${isEnabled ? "text-muted-foreground" : "text-foreground/65"}`}>
               {period}
             </span>
           </div>
           {alarm.label && (
-            <p className="mt-0.5 text-xs text-muted-foreground">{alarm.label}</p>
+            <p className={`mt-0.5 text-xs ${isEnabled ? "text-muted-foreground" : "text-foreground/60"}`}>
+              {alarm.label}
+            </p>
           )}
           {snoozeUntil && (
-            <p className="mt-0.5 text-xs text-primary/80 font-medium">
-              Snoozed until {snoozeUntil}
-            </p>
+            <p className="mt-0.5 text-xs font-medium text-primary/80">Snoozed until {snoozeUntil}</p>
           )}
         </div>
       </div>
@@ -78,9 +80,10 @@ export function AlarmCard({ alarm, onToggle, onDelete }: AlarmCardProps) {
         <Switch
           checked={alarm.enabled}
           onCheckedChange={() => onToggle(alarm.id)}
-          className="shrink-0 border-border data-[state=checked]:bg-primary data-[state=unchecked]:bg-muted data-[state=unchecked]:border-border"
+          className="shrink-0 data-[state=unchecked]:border-border"
         />
       </div>
     </div>
   );
 }
+
