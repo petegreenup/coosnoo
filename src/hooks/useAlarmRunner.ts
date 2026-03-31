@@ -8,26 +8,24 @@ export function useAlarmRunner(alarms: Alarm[]) {
 
   useEffect(() => {
     const check = () => {
-      const now = new Date();
-      const currentH = now.getHours();
-      const currentM = now.getMinutes();
-      const dateKey = now.toDateString();
+      const now = Date.now();
 
       for (const alarm of alarms) {
-        if (!alarm.enabled) continue;
-        const key = `${alarm.id}-${dateKey}-${currentH}:${currentM}`;
+        if (!alarm.enabled || !alarm.nextTriggerAt) continue;
+        if (now < alarm.nextTriggerAt) continue;
+
+        // Don't re-fire the same trigger more than once
+        const key = `${alarm.id}-${alarm.nextTriggerAt}`;
         if (firedRef.current.has(key)) continue;
 
-        if (alarm.hour === currentH && alarm.minute === currentM) {
+        firedRef.current.add(key);
+        if (firedRef.current.size > 200) {
+          firedRef.current.clear();
           firedRef.current.add(key);
-          // Clean old keys periodically
-          if (firedRef.current.size > 200) {
-            firedRef.current.clear();
-            firedRef.current.add(key);
-          }
-          navigate("/alarm-active");
-          return;
         }
+
+        navigate(`/alarm-active/${alarm.id}`);
+        return;
       }
     };
 

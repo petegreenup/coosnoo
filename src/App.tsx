@@ -19,7 +19,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/alarm-active" element={<AlarmActive />} />
+          <Route path="/alarm-active/:id" element={<AlarmActive />} />
           <Route path="/alarm/:id/edit" element={<AlarmEdit />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="*" element={<NotFound />} />
