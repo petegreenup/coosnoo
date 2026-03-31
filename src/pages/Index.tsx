@@ -21,8 +21,8 @@ const Index = () => {
               <AlarmClock className="h-5 w-5 text-primary" />
             </div>
             <div>
-              <h1 className="text-xl font-semibold text-foreground">Snooze Grid</h1>
-              <p className="text-xs text-muted-foreground">Smart alarm clock</p>
+              <h1 className="text-xl font-semibold text-foreground">Custom Snooze</h1>
+              <p className="text-xs text-muted-foreground">Customizable Snooze Alarm Clock</p>
             </div>
           </div>
           <button
