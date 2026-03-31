@@ -65,17 +65,6 @@ const Index = () => {
           <AddAlarmDialog onAdd={addAlarm} />
         </div>
 
-        {/* Preview snooze grid button */}
-        {alarms.length > 0 && (
-          <div className="mt-6 text-center">
-            <button
-              onClick={() => navigate("/alarm-active")}
-              className="text-xs text-muted-foreground underline-offset-2 hover:underline"
-            >
-              Preview alarm screen →
-            </button>
-          </div>
-        )}
       </div>
     </div>
   );
