@@ -75,7 +75,11 @@ export function AlarmCard({ alarm, onToggle, onDelete }: AlarmCardProps) {
         >
           <Trash2 className="h-4 w-4" />
         </button>
-        <Switch checked={alarm.enabled} onCheckedChange={() => onToggle(alarm.id)} />
+        <Switch
+          checked={alarm.enabled}
+          onCheckedChange={() => onToggle(alarm.id)}
+          className="shrink-0 opacity-100 data-[state=unchecked]:opacity-70"
+        />
       </div>
     </div>
   );
