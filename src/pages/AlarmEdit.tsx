@@ -41,7 +41,13 @@ const AlarmEdit = () => {
 
   const handleSave = () => {
     const h24 = period === "PM" ? (hour % 12) + 12 : hour % 12;
-    updateAlarm(alarm.id, { hour: h24, minute, label, days });
+    const timeChanged = h24 !== alarm.hour || minute !== alarm.minute;
+    if (timeChanged) {
+      updateAlarm(alarm.id, { hour: h24, minute, label, days });
+    } else {
+      // Only update non-time fields — preserve snooze nextTriggerAt
+      updateAlarm(alarm.id, { label, days });
+    }
     navigate("/");
   };
 
