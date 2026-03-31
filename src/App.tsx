@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { AlarmProvider } from "@/hooks/AlarmContext";
 import Index from "./pages/Index.tsx";
 import AlarmActive from "./pages/AlarmActive.tsx";
 import AlarmEdit from "./pages/AlarmEdit.tsx";
@@ -17,13 +18,15 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/alarm-active/:id" element={<AlarmActive />} />
-          <Route path="/alarm/:id/edit" element={<AlarmEdit />} />
-          <Route path="/settings" element={<SettingsPage />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <AlarmProvider>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/alarm-active/:id" element={<AlarmActive />} />
+            <Route path="/alarm/:id/edit" element={<AlarmEdit />} />
+            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </AlarmProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

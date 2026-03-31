@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAlarms } from "@/hooks/useAlarms";
+import { useAlarms } from "@/hooks/AlarmContext";
 import { TimeInput } from "@/components/TimeInput";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

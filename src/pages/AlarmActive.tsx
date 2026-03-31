@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSettings } from "@/hooks/useSettings";
-import { useAlarms } from "@/hooks/useAlarms";
+import { useAlarms } from "@/hooks/AlarmContext";
 import { SnoozeGrid } from "@/components/SnoozeGrid";
 import { BellOff, AlarmClock } from "lucide-react";
 import { toast } from "sonner";
