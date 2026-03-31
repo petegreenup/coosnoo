@@ -92,7 +92,7 @@ const AlarmEdit = () => {
               onChange={(h, m, p) => { setHour(h); setMinute(m); setPeriod(p); }}
               size="lg"
             />
-            <p className="text-xs text-muted-foreground text-center mt-3">Type or tap to edit</p>
+            
           </div>
 
           <div className="rounded-lg border border-border bg-card p-5 space-y-2">
