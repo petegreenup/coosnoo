@@ -83,10 +83,10 @@ const Index = () => {
 function CurrentTime() {
   const [time, setTime] = useState(new Date());
 
-  useState(() => {
+  useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(interval);
-  });
+  }, []);
 
   const h = time.getHours() % 12 || 12;
   const m = time.getMinutes().toString().padStart(2, "0");
