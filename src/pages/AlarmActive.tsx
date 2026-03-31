@@ -1,26 +1,37 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSettings } from "@/hooks/useSettings";
 import { SnoozeGrid } from "@/components/SnoozeGrid";
 import { BellOff, AlarmClock } from "lucide-react";
 import { toast } from "sonner";
+import { startAlarmSound, stopAlarmSound } from "@/lib/alarmSound";
 
 const AlarmActive = () => {
   const { settings } = useSettings();
   const navigate = useNavigate();
   const [snoozed, setSnoozed] = useState(false);
 
+  // Start alarm sound on mount, stop on unmount
+  useEffect(() => {
+    startAlarmSound();
+    return () => stopAlarmSound();
+  }, []);
+
   const handleSnooze = (minutes: number) => {
+    stopAlarmSound();
     setSnoozed(true);
     toast.success(`Snoozed for ${minutes} minutes`, {
       description: `Alarm will ring again at ${getSnoozeTime(minutes)}`,
     });
-    setTimeout(() => navigate("/"), 1500);
+    setTimeout(() => {
+      navigate("/", { replace: true });
+    }, 1200);
   };
 
   const handleDismiss = () => {
+    stopAlarmSound();
     toast("Alarm dismissed", { description: "Have a great day!" });
-    navigate("/");
+    navigate("/", { replace: true });
   };
 
   return (

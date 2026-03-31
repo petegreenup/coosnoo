@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Switch } from "@/components/ui/switch";
 import { Clock, Trash2 } from "lucide-react";
 import type { Alarm } from "@/types/alarm";
@@ -18,13 +19,15 @@ function formatTime(hour: number, minute: number) {
 
 export function AlarmCard({ alarm, onToggle, onDelete }: AlarmCardProps) {
   const { time, period } = formatTime(alarm.hour, alarm.minute);
+  const navigate = useNavigate();
 
   return (
     <div
-      className={`flex items-center justify-between rounded-lg border px-5 py-4 transition-all ${
+      onClick={() => navigate(`/alarm/${alarm.id}/edit`)}
+      className={`flex items-center justify-between rounded-lg border px-5 py-4 transition-all cursor-pointer ${
         alarm.enabled
-          ? "border-primary/30 bg-card"
-          : "border-border/50 bg-card/50 opacity-60"
+          ? "border-primary/30 bg-card hover:bg-secondary/50"
+          : "border-border/50 bg-card/50 opacity-60 hover:opacity-80"
       }`}
     >
       <div className="flex items-center gap-4">
@@ -43,7 +46,7 @@ export function AlarmCard({ alarm, onToggle, onDelete }: AlarmCardProps) {
           )}
         </div>
       </div>
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3" onClick={(e) => e.stopPropagation()}>
         <button
           onClick={() => onDelete(alarm.id)}
           className="rounded-md p-2 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
