@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAlarms } from "@/hooks/useAlarms";
 import { useSettings } from "@/hooks/useSettings";
+import { useAlarmRunner } from "@/hooks/useAlarmRunner";
 import { AlarmCard } from "@/components/AlarmCard";
 import { AddAlarmDialog } from "@/components/AddAlarmDialog";
 import { AlarmClock, Settings } from "lucide-react";
@@ -9,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 const Index = () => {
   const { alarms, addAlarm, toggleAlarm, deleteAlarm } = useAlarms();
   const navigate = useNavigate();
+  useAlarmRunner(alarms);
 
   return (
     <div className="min-h-screen bg-background px-4 py-8">
