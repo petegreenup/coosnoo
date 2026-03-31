@@ -20,7 +20,7 @@ export function useSettings() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
   }, [settings]);
 
-  const updateSettings = useCallback((updates: Partial<AppSettings>) => {
+  const updateSettings = useCallback((updates: Partial<AppSettings> | AppSettings) => {
     setSettings((prev) => ({ ...prev, ...updates }));
   }, []);
 
