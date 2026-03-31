@@ -78,7 +78,7 @@ export function AlarmCard({ alarm, onToggle, onDelete }: AlarmCardProps) {
         <Switch
           checked={alarm.enabled}
           onCheckedChange={() => onToggle(alarm.id)}
-          className="shrink-0 opacity-100 data-[state=unchecked]:opacity-70"
+          className="shrink-0 border-border data-[state=checked]:bg-primary data-[state=unchecked]:bg-muted data-[state=unchecked]:border-border"
         />
       </div>
     </div>
