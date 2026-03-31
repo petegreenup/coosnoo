@@ -44,10 +44,10 @@ export function AlarmCard({ alarm, onToggle, onDelete }: AlarmCardProps) {
       className={`flex items-center justify-between rounded-lg border px-5 py-4 transition-all cursor-pointer ${
         alarm.enabled
           ? "border-primary/30 bg-card hover:bg-secondary/50"
-          : "border-border/50 bg-card/50 opacity-60 hover:opacity-80"
+          : "border-border/50 bg-card/50 hover:bg-secondary/30"
       }`}
     >
-      <div className="flex items-center gap-4">
+      <div className={`flex items-center gap-4 ${!alarm.enabled ? "opacity-50" : ""}`}>
         <Clock className="h-5 w-5 text-muted-foreground" />
         <div>
           <div className="flex items-baseline gap-1.5">

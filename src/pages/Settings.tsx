@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useSettings } from "@/hooks/useSettings";
 import { ArrowLeft } from "lucide-react";
 import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -90,6 +91,10 @@ const SettingsPage = () => {
                 ))}
             </div>
           </div>
+
+          <Button onClick={() => navigate("/")} className="w-full" size="lg">
+            Save Settings
+          </Button>
         </div>
       </div>
     </div>
