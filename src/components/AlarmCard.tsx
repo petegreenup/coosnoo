@@ -17,9 +17,26 @@ function formatTime(hour: number, minute: number) {
   return { time: `${h}:${m}`, period };
 }
 
+function isSnoozed(alarm: Alarm): string | null {
+  if (!alarm.enabled || !alarm.nextTriggerAt) return null;
+  // Check if nextTriggerAt differs from the normal scheduled time (meaning it was snoozed)
+  const scheduled = new Date();
+  scheduled.setHours(alarm.hour, alarm.minute, 0, 0);
+  if (scheduled.getTime() <= Date.now()) scheduled.setDate(scheduled.getDate() + 1);
+  // If within 60s of scheduled time, it's not a snooze
+  if (Math.abs(alarm.nextTriggerAt - scheduled.getTime()) < 60000) return null;
+  // It's snoozed — format the time
+  const d = new Date(alarm.nextTriggerAt);
+  const h = d.getHours() % 12 || 12;
+  const m = d.getMinutes().toString().padStart(2, "0");
+  const p = d.getHours() >= 12 ? "PM" : "AM";
+  return `${h}:${m} ${p}`;
+}
+
 export function AlarmCard({ alarm, onToggle, onDelete }: AlarmCardProps) {
   const { time, period } = formatTime(alarm.hour, alarm.minute);
   const navigate = useNavigate();
+  const snoozeUntil = isSnoozed(alarm);
 
   return (
     <div
@@ -43,6 +60,11 @@ export function AlarmCard({ alarm, onToggle, onDelete }: AlarmCardProps) {
           </div>
           {alarm.label && (
             <p className="mt-0.5 text-xs text-muted-foreground">{alarm.label}</p>
+          )}
+          {snoozeUntil && (
+            <p className="mt-0.5 text-xs text-primary/80 font-medium">
+              Snoozed until {snoozeUntil}
+            </p>
           )}
         </div>
       </div>
