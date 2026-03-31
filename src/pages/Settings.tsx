@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useSettings } from "@/hooks/useSettings";
 import { ArrowLeft } from "lucide-react";
 import { Label } from "@/components/ui/label";
-import {
+import { Button } from "@/components/ui/button";
   Select,
   SelectContent,
   SelectItem,
