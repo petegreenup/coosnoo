@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 const Index = () => {
   const { alarms, addAlarm, toggleAlarm, deleteAlarm } = useAlarms();
   const navigate = useNavigate();
+  useAlarmRunner(alarms);
 
   return (
     <div className="min-h-screen bg-background px-4 py-8">
