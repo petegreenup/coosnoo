@@ -62,7 +62,7 @@ export function AddAlarmDialog({ onAdd }: AddAlarmDialogProps) {
               onChange={(h, m, p) => { setHour(h); setMinute(m); setPeriod(p); }}
               size="md"
             />
-            <p className="text-xs text-muted-foreground text-center mt-2">Type or tap to edit</p>
+            
           </div>
 
           <div className="space-y-2">
