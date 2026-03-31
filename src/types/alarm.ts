@@ -5,6 +5,7 @@ export interface Alarm {
   enabled: boolean;
   label: string;
   days: number[]; // 0=Sun, 1=Mon...6=Sat, empty = one-time
+  nextTriggerAt?: number; // epoch ms — set when alarm is armed or snoozed
 }
 
 export interface SnoozeButton {

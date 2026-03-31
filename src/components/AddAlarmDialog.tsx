@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Plus } from "lucide-react";
-import { TimePicker } from "@/components/TimePicker";
+import { TimeInput } from "@/components/TimeInput";
 import type { Alarm } from "@/types/alarm";
 
 interface AddAlarmDialogProps {
@@ -24,7 +24,6 @@ export function AddAlarmDialog({ onAdd }: AddAlarmDialogProps) {
   const [minute, setMinute] = useState(0);
   const [label, setLabel] = useState("");
   const [period, setPeriod] = useState<"AM" | "PM">("AM");
-  const [timePickerOpen, setTimePickerOpen] = useState(false);
 
   const handleSave = () => {
     const h24 = period === "PM" ? (hour % 12) + 12 : hour % 12;
@@ -55,31 +54,16 @@ export function AddAlarmDialog({ onAdd }: AddAlarmDialogProps) {
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-6 py-2">
-          {/* Tap to open time picker */}
-          <button
-            type="button"
-            onClick={() => setTimePickerOpen(true)}
-            className="w-full rounded-xl bg-secondary/50 border border-border py-5 px-4 flex items-center justify-center gap-2 transition-colors hover:bg-secondary"
-          >
-            <span className="font-mono-display text-5xl font-light text-foreground">
-              {hour.toString().padStart(2, "0")}:{minute.toString().padStart(2, "0")}
-            </span>
-            <span className="text-lg text-muted-foreground ml-2">{period}</span>
-          </button>
-          <p className="text-xs text-muted-foreground text-center -mt-4">Tap to change time</p>
-
-          <TimePicker
-            open={timePickerOpen}
-            onOpenChange={setTimePickerOpen}
-            hour={hour}
-            minute={minute}
-            period={period}
-            onConfirm={(h, m, p) => {
-              setHour(h);
-              setMinute(m);
-              setPeriod(p);
-            }}
-          />
+          <div className="py-4">
+            <TimeInput
+              hour={hour}
+              minute={minute}
+              period={period}
+              onChange={(h, m, p) => { setHour(h); setMinute(m); setPeriod(p); }}
+              size="md"
+            />
+            <p className="text-xs text-muted-foreground text-center mt-2">Type or tap to edit</p>
+          </div>
 
           <div className="space-y-2">
             <Label className="text-muted-foreground">Label (optional)</Label>

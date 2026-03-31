@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSettings } from "@/hooks/useSettings";
+import { useAlarms } from "@/hooks/useAlarms";
 import { SnoozeGrid } from "@/components/SnoozeGrid";
 import { BellOff, AlarmClock } from "lucide-react";
 import { toast } from "sonner";
@@ -8,10 +9,11 @@ import { startAlarmSound, stopAlarmSound } from "@/lib/alarmSound";
 
 const AlarmActive = () => {
   const { settings } = useSettings();
+  const { id } = useParams<{ id: string }>();
+  const { snoozeAlarm, updateAlarm } = useAlarms();
   const navigate = useNavigate();
   const [snoozed, setSnoozed] = useState(false);
 
-  // Start alarm sound on mount, stop on unmount
   useEffect(() => {
     startAlarmSound();
     return () => stopAlarmSound();
@@ -19,6 +21,9 @@ const AlarmActive = () => {
 
   const handleSnooze = (minutes: number) => {
     stopAlarmSound();
+    if (id) {
+      snoozeAlarm(id, minutes);
+    }
     setSnoozed(true);
     toast.success(`Snoozed for ${minutes} minutes`, {
       description: `Alarm will ring again at ${getSnoozeTime(minutes)}`,
@@ -30,6 +35,10 @@ const AlarmActive = () => {
 
   const handleDismiss = () => {
     stopAlarmSound();
+    // Clear the trigger so it doesn't re-fire this minute
+    if (id) {
+      updateAlarm(id, { nextTriggerAt: undefined });
+    }
     toast("Alarm dismissed", { description: "Have a great day!" });
     navigate("/", { replace: true });
   };
@@ -38,7 +47,6 @@ const AlarmActive = () => {
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 py-8">
       {!snoozed ? (
         <>
-          {/* Pulsing alarm indicator */}
           <div className="mb-8 relative">
             <div className="h-24 w-24 rounded-full bg-primary/20 flex items-center justify-center animate-pulse-ring">
               <AlarmClock className="h-12 w-12 text-primary" />
@@ -50,10 +58,8 @@ const AlarmActive = () => {
           </h1>
           <p className="text-sm text-muted-foreground mb-10">Choose your snooze duration</p>
 
-          {/* Snooze Grid */}
           <SnoozeGrid settings={settings} onSnooze={handleSnooze} />
 
-          {/* Dismiss button - visually distinct */}
           <div className="mt-12 w-full max-w-sm">
             <div className="border-t border-border/50 pt-6">
               <button

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAlarms } from "@/hooks/useAlarms";
-import { TimePicker } from "@/components/TimePicker";
+import { TimeInput } from "@/components/TimeInput";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,7 +20,6 @@ const AlarmEdit = () => {
   const [period, setPeriod] = useState<"AM" | "PM">("AM");
   const [label, setLabel] = useState("");
   const [days, setDays] = useState<number[]>([]);
-  const [timePickerOpen, setTimePickerOpen] = useState(false);
 
   useEffect(() => {
     if (!alarm) return;
@@ -60,7 +59,6 @@ const AlarmEdit = () => {
   return (
     <div className="min-h-screen bg-background px-4 py-8">
       <div className="mx-auto max-w-md">
-        {/* Header */}
         <div className="mb-8 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <button
@@ -80,33 +78,17 @@ const AlarmEdit = () => {
         </div>
 
         <div className="space-y-6">
-          {/* Time display — tap to edit */}
-          <button
-            type="button"
-            onClick={() => setTimePickerOpen(true)}
-            className="w-full rounded-xl bg-card border border-border py-8 px-4 flex items-center justify-center gap-2 transition-colors hover:bg-secondary/50"
-          >
-            <span className="font-mono-display text-6xl font-light text-foreground">
-              {hour.toString().padStart(2, "0")}:{minute.toString().padStart(2, "0")}
-            </span>
-            <span className="text-xl text-muted-foreground ml-2">{period}</span>
-          </button>
-          <p className="text-xs text-muted-foreground text-center -mt-4">Tap to change time</p>
+          <div className="rounded-xl bg-card border border-border py-8 px-4">
+            <TimeInput
+              hour={hour}
+              minute={minute}
+              period={period}
+              onChange={(h, m, p) => { setHour(h); setMinute(m); setPeriod(p); }}
+              size="lg"
+            />
+            <p className="text-xs text-muted-foreground text-center mt-3">Type or tap to edit</p>
+          </div>
 
-          <TimePicker
-            open={timePickerOpen}
-            onOpenChange={setTimePickerOpen}
-            hour={hour}
-            minute={minute}
-            period={period}
-            onConfirm={(h, m, p) => {
-              setHour(h);
-              setMinute(m);
-              setPeriod(p);
-            }}
-          />
-
-          {/* Label */}
           <div className="rounded-lg border border-border bg-card p-5 space-y-2">
             <Label className="text-muted-foreground">Label</Label>
             <Input
@@ -117,7 +99,6 @@ const AlarmEdit = () => {
             />
           </div>
 
-          {/* Repeat days */}
           <div className="rounded-lg border border-border bg-card p-5">
             <Label className="text-muted-foreground text-sm">Repeat</Label>
             <div className="flex gap-2 mt-3">

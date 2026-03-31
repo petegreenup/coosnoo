@@ -12,6 +12,18 @@ function loadAlarms(): Alarm[] {
   }
 }
 
+/** Compute next trigger timestamp for an alarm based on its hour/minute */
+export function armAlarm(alarm: Alarm): Alarm {
+  const now = new Date();
+  const target = new Date();
+  target.setHours(alarm.hour, alarm.minute, 0, 0);
+  // If the time already passed today, schedule for tomorrow
+  if (target.getTime() <= now.getTime()) {
+    target.setDate(target.getDate() + 1);
+  }
+  return { ...alarm, nextTriggerAt: target.getTime() };
+}
+
 export function useAlarms() {
   const [alarms, setAlarms] = useState<Alarm[]>(loadAlarms);
 
@@ -20,12 +32,31 @@ export function useAlarms() {
   }, [alarms]);
 
   const addAlarm = useCallback((alarm: Omit<Alarm, "id">) => {
-    setAlarms((prev) => [...prev, { ...alarm, id: crypto.randomUUID() }]);
+    const newAlarm: Alarm = { ...alarm, id: crypto.randomUUID() };
+    setAlarms((prev) => [...prev, armAlarm(newAlarm)]);
   }, []);
 
   const updateAlarm = useCallback((id: string, updates: Partial<Alarm>) => {
     setAlarms((prev) =>
-      prev.map((a) => (a.id === id ? { ...a, ...updates } : a))
+      prev.map((a) => {
+        if (a.id !== id) return a;
+        const updated = { ...a, ...updates };
+        // Re-arm if time changed
+        if (updates.hour !== undefined || updates.minute !== undefined) {
+          return armAlarm(updated);
+        }
+        return updated;
+      })
+    );
+  }, []);
+
+  const snoozeAlarm = useCallback((id: string, minutes: number) => {
+    setAlarms((prev) =>
+      prev.map((a) =>
+        a.id === id
+          ? { ...a, nextTriggerAt: Date.now() + minutes * 60000, enabled: true }
+          : a
+      )
     );
   }, []);
 
@@ -35,9 +66,13 @@ export function useAlarms() {
 
   const toggleAlarm = useCallback((id: string) => {
     setAlarms((prev) =>
-      prev.map((a) => (a.id === id ? { ...a, enabled: !a.enabled } : a))
+      prev.map((a) => {
+        if (a.id !== id) return a;
+        const toggled = { ...a, enabled: !a.enabled };
+        return toggled.enabled ? armAlarm(toggled) : toggled;
+      })
     );
   }, []);
 
-  return { alarms, addAlarm, updateAlarm, deleteAlarm, toggleAlarm };
+  return { alarms, addAlarm, updateAlarm, deleteAlarm, toggleAlarm, snoozeAlarm };
 }
