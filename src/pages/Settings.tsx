@@ -150,13 +150,21 @@ const SettingsPage = () => {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="flex-col gap-2 sm:flex-col">
-            <Button onClick={() => { setShowUnsavedDialog(false); handleSave(); }} className="w-full">
+            <Button
+              type="button"
+              onClick={() => { setShowUnsavedDialog(false); handleSave(); }}
+              className="w-full"
+            >
               Save Settings
             </Button>
             <Button
+              type="button"
               variant="outline"
               className="w-full"
-              onClick={() => { setShowUnsavedDialog(false); setDraft(structuredClone(settings)); }}
+              onClick={() => {
+                setDraft(structuredClone(settings));
+                window.setTimeout(() => setShowUnsavedDialog(false), 0);
+              }}
             >
               Discard &amp; Go Back
             </Button>
