@@ -21,7 +21,11 @@ export function useSettings() {
   }, [settings]);
 
   const updateSettings = useCallback((updates: Partial<AppSettings> | AppSettings) => {
-    setSettings((prev) => ({ ...prev, ...updates }));
+    setSettings((prev) => {
+      const next = { ...prev, ...updates };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      return next;
+    });
   }, []);
 
   const updateSnoozeMinutes = useCallback((index: number, minutes: number) => {
