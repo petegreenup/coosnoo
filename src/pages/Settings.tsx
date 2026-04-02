@@ -38,7 +38,7 @@ const SettingsPage = () => {
 
   const handleSave = () => {
     updateSettings(draft);
-    navigate("/");
+    setTimeout(() => navigate("/"), 50);
   };
 
   const handleBack = () => {
