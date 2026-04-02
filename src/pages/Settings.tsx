@@ -156,7 +156,7 @@ const SettingsPage = () => {
             <Button
               variant="outline"
               className="w-full"
-              onClick={() => { setShowUnsavedDialog(false); navigate("/"); }}
+              onClick={() => { setShowUnsavedDialog(false); setDraft(structuredClone(settings)); }}
             >
               Discard &amp; Go Back
             </Button>
