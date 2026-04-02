@@ -150,20 +150,16 @@ const SettingsPage = () => {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="flex-col gap-2 sm:flex-col">
-            <AlertDialogAction asChild>
-              <Button onClick={handleSave} className="w-full">
-                Save Settings
-              </Button>
-            </AlertDialogAction>
-            <AlertDialogCancel asChild>
-              <Button
-                variant="outline"
-                className="w-full"
-                onClick={() => navigate("/")}
-              >
-                Discard & Go Back
-              </Button>
-            </AlertDialogCancel>
+            <Button onClick={() => { setShowUnsavedDialog(false); handleSave(); }} className="w-full">
+              Save Settings
+            </Button>
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={() => { setShowUnsavedDialog(false); navigate("/"); }}
+            >
+              Discard &amp; Go Back
+            </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
