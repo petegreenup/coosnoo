@@ -166,7 +166,6 @@ const SettingsPage = () => {
               className="w-full"
               onClick={() => {
                 ignoreNextNavigationRef.current = true;
-                setDraft(structuredClone(settings));
                 setShowUnsavedDialog(false);
                 window.setTimeout(() => {
                   ignoreNextNavigationRef.current = false;
