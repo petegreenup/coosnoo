@@ -165,8 +165,12 @@ const SettingsPage = () => {
               variant="outline"
               className="w-full"
               onClick={() => {
+                ignoreNextNavigationRef.current = true;
                 setDraft(structuredClone(settings));
-                window.setTimeout(() => setShowUnsavedDialog(false), 0);
+                setShowUnsavedDialog(false);
+                window.setTimeout(() => {
+                  ignoreNextNavigationRef.current = false;
+                }, 300);
               }}
             >
               Discard &amp; Go Back
