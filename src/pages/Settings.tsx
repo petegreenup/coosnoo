@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSettings } from "@/hooks/useSettings";
 import { ArrowLeft } from "lucide-react";
@@ -30,7 +30,6 @@ const SettingsPage = () => {
   // Draft state — edits happen here, not saved until "Save"
   const [draft, setDraft] = useState(() => structuredClone(settings));
   const [showUnsavedDialog, setShowUnsavedDialog] = useState(false);
-  const ignoreNextNavigationRef = useRef(false);
 
   const hasChanges = useMemo(
     () => JSON.stringify(draft) !== JSON.stringify(settings),
@@ -38,13 +37,11 @@ const SettingsPage = () => {
   );
 
   const handleSave = () => {
-    if (ignoreNextNavigationRef.current) return;
     updateSettings(draft);
     setTimeout(() => navigate("/"), 50);
   };
 
   const handleBack = () => {
-    if (ignoreNextNavigationRef.current) return;
     if (hasChanges) {
       setShowUnsavedDialog(true);
     } else {
@@ -140,6 +137,14 @@ const SettingsPage = () => {
           <Button onClick={handleSave} className="w-full" size="lg">
             Save Settings
           </Button>
+          <Button
+            variant="ghost"
+            className="w-full text-muted-foreground"
+            size="lg"
+            onClick={() => navigate("/")}
+          >
+            Cancel
+          </Button>
         </div>
       </div>
 
@@ -165,14 +170,11 @@ const SettingsPage = () => {
               variant="outline"
               className="w-full"
               onClick={() => {
-                ignoreNextNavigationRef.current = true;
                 setShowUnsavedDialog(false);
-                window.setTimeout(() => {
-                  ignoreNextNavigationRef.current = false;
-                }, 300);
+                navigate("/");
               }}
             >
-              Discard &amp; Go Back
+              Cancel
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
