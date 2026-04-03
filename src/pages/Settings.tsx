@@ -30,6 +30,7 @@ const SettingsPage = () => {
   // Draft state — edits happen here, not saved until "Save"
   const [draft, setDraft] = useState(() => structuredClone(settings));
   const [showUnsavedDialog, setShowUnsavedDialog] = useState(false);
+  const ignoreNextNavigationRef = useRef(false);
 
   const hasChanges = useMemo(
     () => JSON.stringify(draft) !== JSON.stringify(settings),
@@ -37,11 +38,13 @@ const SettingsPage = () => {
   );
 
   const handleSave = () => {
+    if (ignoreNextNavigationRef.current) return;
     updateSettings(draft);
     setTimeout(() => navigate("/"), 50);
   };
 
   const handleBack = () => {
+    if (ignoreNextNavigationRef.current) return;
     if (hasChanges) {
       setShowUnsavedDialog(true);
     } else {
