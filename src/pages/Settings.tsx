@@ -140,6 +140,14 @@ const SettingsPage = () => {
           <Button onClick={handleSave} className="w-full" size="lg">
             Save Settings
           </Button>
+          <Button
+            variant="ghost"
+            className="w-full text-muted-foreground"
+            size="lg"
+            onClick={() => navigate("/")}
+          >
+            Cancel
+          </Button>
         </div>
       </div>
 
@@ -165,14 +173,11 @@ const SettingsPage = () => {
               variant="outline"
               className="w-full"
               onClick={() => {
-                ignoreNextNavigationRef.current = true;
                 setShowUnsavedDialog(false);
-                window.setTimeout(() => {
-                  ignoreNextNavigationRef.current = false;
-                }, 300);
+                navigate("/");
               }}
             >
-              Discard &amp; Go Back
+              Cancel
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
