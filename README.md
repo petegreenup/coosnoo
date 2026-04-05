@@ -1,3 +1,3 @@
-# Welcome to your Lovable project
+# CooSnoo - the Customizable Snooze Alarm Clock
 
 TODO: Document your project here
